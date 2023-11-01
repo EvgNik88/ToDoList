@@ -1,24 +1,55 @@
-
 class ToDoList:
-    '''Список задач с функциями добавления и удаления'''
+    """Список задач с функциями добавления и удаления"""
 
-    menu = {'1': 'Добавить задачу', '2': 'Список задач', '3': 'Выполнить задачу',
-            '4': 'Повторить задачу', '5': 'Выйти'}
+    menu = {
+        '1': 'Добавить задачу',
+        '2': 'Список задач',
+        '3': 'Выполнить задачу',
+        '4': 'Повторить задачу',
+        '5': 'Удалить задачу',
+        '6': 'Выйти'
+    }
 
-    def __init__(self):
+    def __init__(self, name):
         self.todo_items = []  # Список задач
+        self.name = name
 
-    def add_todo(self, items):
-        self.todo_items.append(items)
+    def add_todo(self, item):
+        """Добавление новой задачи"""
+        if item.todo != "":
+            self.todo_items.append(item)
+            print(f'Задача {item.num} добавлена')
+            print()
+        else:
+            print("Нельзя добавлять пустую задачу")
+            print()
+            
+    def del_todo(self, key):
+        """Удаление задачи по номеру"""
+        index = self.find_todo(key)
+        if index == -1:
+            print(f'Задача {key} не найдена')
+            print()
+        else:
+            del self.todo_items[index]
+            print(f'Задача {key} удалена')
+            print()
 
     def list(self):
-        print('Список задач:')
+        print(f'Список задач "{self.name}":')
         for item in self.todo_items:
             print(str(item.num) + '. ' + item.todo + ' (Выполнено)' * int(item.is_done))
         print()
 
-    def run(self):
+    def find_todo(self, num):
+        index = -1
+        for item in self.todo_items:
+            index += 1
+            if item.num == num:
+                return index
+        return -1
 
+    def run(self):
         while True:
             print('Меню:')
             for key, value in ToDoList.menu.items():
@@ -26,22 +57,24 @@ class ToDoList:
             print()
             print('Выберите пункт меню:', end=' ')
             command = input()
+            print()
             if command == '1':
                 self.add_todo(ToDoItem(input('Что добавить? ')))
                 print()
-                print('Новая задача добавлена', end='\n\n')
+
             elif command == '2':
                 self.list()
 
             elif command == '3':
                 key = int(input('Номер выполненной задачи: '))
-                for item in self.todo_items:
-                    if item.num == key:
-                        item.check()
-                        print(f'Задача {key} выполнена')
-                        break
+                index = self.find_todo(key)
+                if index != -1:
+                    self.todo_items[index].check()
+                    print(f'Задача {key} выполнена')
+                    print()
                 else:
                     print(f'Задача {key} не найдена')
+                    print()
 
             elif command == '4':
                 key = int(input('Номер задачи для повторения: '))
@@ -49,11 +82,16 @@ class ToDoList:
                     if item.num == key:
                         item.uncheck()
                         print(f'Задача {key} повторена')
+                        print()
                         break
                 else:
                     print(f'Задача {key} не найдена')
+                    print()
 
             elif command == '5':
+                key = int(input('Номер задачи для удаления: '))
+                self.del_todo(key)
+            elif command == '6':
                 print('Программа завершена.')
                 break
 
@@ -75,5 +113,7 @@ class ToDoItem:
 
 
 if __name__ == '__main__':
-    todo_1 = ToDoList()
+    name = input('Введите название списка задач: ')
+
+    todo_1 = ToDoList(name)
     todo_1.run()
