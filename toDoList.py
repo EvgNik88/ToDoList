@@ -1,6 +1,4 @@
 class ToDoList:
-    """Список задач с функциями добавления и удаления"""
-
     menu = {
         '1': 'Добавить задачу',
         '2': 'Список задач',
@@ -11,40 +9,37 @@ class ToDoList:
     }
 
     def __init__(self, name):
-        self.todo_items = []  # Список задач
+        self.todo_items = []
         self.name = name
 
-    def add_todo(self, item):
-        """Добавление новой задачи"""
-        if item.todo != "":
+    def add_todo(self, todo):
+        if todo != "":
+            item = ToDoItem(todo)
             self.todo_items.append(item)
             print(f'Задача {item.num} добавлена')
             print()
         else:
             print("Нельзя добавлять пустую задачу")
             print()
-            
-    def del_todo(self, key):
-        """Удаление задачи по номеру"""
-        index = self.find_todo(key)
+
+    def del_todo(self, num):
+        index = self.find_todo(num)
         if index == -1:
-            print(f'Задача {key} не найдена')
+            print(f'Задача {num} не найдена')
             print()
         else:
             del self.todo_items[index]
-            print(f'Задача {key} удалена')
+            print(f'Задача {num} удалена')
             print()
 
     def list(self):
         print(f'Список задач "{self.name}":')
         for item in self.todo_items:
-            print(str(item.num) + '. ' + item.todo + ' (Выполнено)' * int(item.is_done))
+            print(str(item.num) + '. ' + item.todo + (' (Выполнено)' if item.is_done else ''))
         print()
 
     def find_todo(self, num):
-        index = -1
-        for item in self.todo_items:
-            index += 1
+        for index, item in enumerate(self.todo_items):
             if item.num == num:
                 return index
         return -1
@@ -53,44 +48,44 @@ class ToDoList:
         while True:
             print('Меню:')
             for key, value in ToDoList.menu.items():
-                print(key + '. ' + value, end='\n')
+                print(key + '. ' + value)
             print()
             print('Выберите пункт меню:', end=' ')
             command = input()
             print()
             if command == '1':
-                self.add_todo(ToDoItem(input('Что добавить? ')))
+                self.add_todo(input('Что добавить? '))
                 print()
 
             elif command == '2':
                 self.list()
 
             elif command == '3':
-                key = int(input('Номер выполненной задачи: '))
-                index = self.find_todo(key)
+                num = int(input('Номер выполненной задачи: '))
+                index = self.find_todo(num)
                 if index != -1:
                     self.todo_items[index].check()
-                    print(f'Задача {key} выполнена')
+                    print(f'Задача {num} выполнена')
                     print()
                 else:
-                    print(f'Задача {key} не найдена')
+                    print(f'Задача {num} не найдена')
                     print()
 
             elif command == '4':
-                key = int(input('Номер задачи для повторения: '))
+                num = int(input('Номер задачи для повторения: '))
                 for item in self.todo_items:
-                    if item.num == key:
+                    if item.num == num:
                         item.uncheck()
-                        print(f'Задача {key} повторена')
+                        print(f'Задача {num} повторена')
                         print()
                         break
                 else:
-                    print(f'Задача {key} не найдена')
+                    print(f'Задача {num} не найдена')
                     print()
 
             elif command == '5':
-                key = int(input('Номер задачи для удаления: '))
-                self.del_todo(key)
+                num = int(input('Номер задачи для удаления: '))
+                self.del_todo(num)
             elif command == '6':
                 print('Программа завершена.')
                 break
