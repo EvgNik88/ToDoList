@@ -39,7 +39,9 @@ class ToDoList:
         print()
 
     def find_todo(self, num):
-        for index, item in enumerate(self.todo_items):
+        index = -1
+        for item in self.todo_items:
+            index += 1
             if item.num == num:
                 return index
         return -1
