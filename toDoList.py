@@ -111,6 +111,5 @@ class ToDoItem:
 
 if __name__ == '__main__':
     name = input('Введите название списка задач: ')
-
     todo_1 = ToDoList(name)
     todo_1.run()
