@@ -1,5 +1,4 @@
 class ToDoList:
-
     menu = {
         '1': 'Добавить задачу',
         '2': 'Список задач',
@@ -29,14 +28,24 @@ class ToDoList:
 
     def del_todo(self, num):
         """Метод для удаления задачи"""
-        index = num - 1
-        if index not in range(len(self.todo_items)):
+        if len(str(num)) == 0:
+            print("Неверный ввод. Пожалуйста, укажите номер задачи.")
+            print()
+            return
+
+        if not str(num).isdigit():
+            print("Неверный ввод. Пожалуйста, укажите номер задачи числом.")
+            print()
+            return
+
+        index = int(num) - 1
+
+        if index < 0 or index >= len(self.todo_items):
             print(f'Задача {num} не найдена')
             print()
         else:
             del self.todo_items[index]
             print(f'Задача {num} удалена')
-            self.correct_task_number()
             print()
 
     def clear_all_tasks(self):
@@ -56,10 +65,10 @@ class ToDoList:
             print('Список задач пуст.')
         else:
             for item in self.todo_items:
-                print(str(item.num) + '. ' + item.todo + (' (Выполнено)' if item.is_done else ''))
+                done_mark = "(Выполнено)" if item.is_done else ""
+                print(f"{self.todo_items.index(item) + 1}. {item.todo} {done_mark}")
         print()
 
-    
     def swap_tasks(self, task1, task2):
         """Метод для замены задач местами"""
         index1 = task1 - 1
@@ -70,14 +79,8 @@ class ToDoList:
             return
 
         self.todo_items[index1], self.todo_items[index2] = self.todo_items[index2], self.todo_items[index1]
-        self.correct_task_number()
         print(f"Номера задач {task1} и {task2} поменялись местами.")
         print()
-
-    def correct_task_number(self):
-        """Метод для корректировки номеров задач после изменения порядка"""
-        for i in range(len(self.todo_items)):
-            self.todo_items[i].num = i + 1
 
     def run(self):
         """Метод для запуска"""
@@ -120,7 +123,7 @@ class ToDoList:
                     print()
 
             elif command == '5':
-                num = int(input('Номер задачи для удаления: '))
+                num = input('Номер задачи для удаления: ')
                 self.del_todo(num)
 
             elif command == '6':
