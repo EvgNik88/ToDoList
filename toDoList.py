@@ -29,8 +29,8 @@ class ToDoList:
 
     def del_todo(self, num):
         """Метод для удаления задачи"""
-        index = self.find_todo(num)
-        if index == -1:
+        index = num - 1
+        if index not in range(len(self.todo_items)):
             print(f'Задача {num} не найдена')
             print()
         else:
@@ -59,27 +59,19 @@ class ToDoList:
                 print(str(item.num) + '. ' + item.todo + (' (Выполнено)' if item.is_done else ''))
         print()
 
-    def find_todo(self, num):
-        """Метод для поиска задачи по номеру в списке"""
-        index = -1
-        for item in self.todo_items:
-            index += 1
-            if item.num == num:
-                return index
-        return -1
-
+    
     def swap_tasks(self, task1, task2):
         """Метод для замены задач местами"""
-        index1 = self.find_todo(task1)
-        index2 = self.find_todo(task2)
+        index1 = task1 - 1
+        index2 = task2 - 1
 
-        if index1 == -1 or index2 == -1:
+        if index1 not in range(len(self.todo_items)) or index2 not in range(len(self.todo_items)):
             print("Задача не найдена.")
             return
 
         self.todo_items[index1], self.todo_items[index2] = self.todo_items[index2], self.todo_items[index1]
         self.correct_task_number()
-        print(f"Номера задач {index1 + 1} и {index2 + 1} поменялись местами.")
+        print(f"Номера задач {task1} и {task2} поменялись местами.")
         print()
 
     def correct_task_number(self):
@@ -106,8 +98,8 @@ class ToDoList:
 
             elif command == '3':
                 num = int(input('Номер выполненной задачи: '))
-                index = self.find_todo(num)
-                if index != -1:
+                index = num - 1
+                if index in range(len(self.todo_items)):
                     self.todo_items[index].check()
                     print(f'Задача {num} выполнена.')
                     print()
