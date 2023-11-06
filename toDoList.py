@@ -15,48 +15,59 @@ class ToDoList:
         self.todo_items = []
         self.name = name
 
-    def add_todo(self, todo: str):
+    def add_task(self, todo: str):
         """Метод для добавления задачи"""
         if todo != "":
             item = ToDoItem(todo)
             self.todo_items.append(item)
             print(f'Задача {item.num} добавлена')
             print()
+            return True
         else:
             print("Нельзя добавлять пустую задачу")
             print()
+            return False
 
-    def del_todo(self, num):
+    def del_task(self, num):
         """Метод для удаления задачи"""
         if len(str(num)) == 0:
             print("Неверный ввод. Пожалуйста, укажите номер задачи.")
             print()
-            return
+            return False
 
         if not str(num).isdigit():
             print("Неверный ввод. Пожалуйста, укажите номер задачи числом.")
             print()
-            return
+            return False
 
         index = int(num) - 1
 
         if index < 0 or index >= len(self.todo_items):
             print(f'Задача {num} не найдена')
             print()
-        else:
-            del self.todo_items[index]
-            print(f'Задача {num} удалена')
-            print()
+            return False
+
+        del self.todo_items[index]
+        print(f'Задача {num} удалена')
+        print()
+        return True
 
     def clear_all_tasks(self):
         """Метод для очистки всего списка задач"""
+        if len(self.todo_items) == 0:
+            return False
         self.todo_items = []
+        return True
 
     def rename_list(self, new_name):
         """Метод для переименования списка задач"""
+        if self.name == new_name:
+            return False
         self.name = new_name
         print(f'Список задач переименован в "{self.name}"')
         print()
+        return True
+
 
     def list(self):
         """Метод для вывода списка задач"""
@@ -76,11 +87,13 @@ class ToDoList:
 
         if index1 not in range(len(self.todo_items)) or index2 not in range(len(self.todo_items)):
             print("Задача не найдена.")
-            return
+            return False
 
         self.todo_items[index1], self.todo_items[index2] = self.todo_items[index2], self.todo_items[index1]
         print(f"Номера задач {task1} и {task2} поменялись местами.")
         print()
+        return True
+
 
     def run(self):
         """Метод для запуска"""
@@ -93,7 +106,7 @@ class ToDoList:
             command = input()
             print()
             if command == '1':
-                self.add_todo(input('Что добавить? '))
+                self.add_task(input('Что добавить? '))
                 print()
 
             elif command == '2':
@@ -124,7 +137,7 @@ class ToDoList:
 
             elif command == '5':
                 num = input('Номер задачи для удаления: ')
-                self.del_todo(num)
+                self.del_task(num)
 
             elif command == '6':
                 task1 = int(input('Введите номер первой задачи для обмена: '))
