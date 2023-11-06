@@ -3,8 +3,11 @@ import pytest
 from todo_list import ToDoList, ToDoItem
 
 
-def test_add_todo():
-    test_list = ToDoList("Test")
+
+
+
+def test_add_todo(print_test_list, create_test_list):
+    test_list = create_test_list
     assert len(test_list.todo_items) == 0
     assert test_list.add_task('Task 1')
     assert len(test_list.todo_items) == 1
@@ -14,8 +17,8 @@ def test_add_todo():
     assert len(test_list.todo_items) == 2
 
 
-def test_del_todo():
-    test_list = ToDoList('Test')
+def test_del_todo(create_test_list, print_test_list):
+    test_list = create_test_list
     test_list.add_task('Task 1')
     test_list.add_task('Task 2')
     test_list.add_task('Task 3')
@@ -27,8 +30,8 @@ def test_del_todo():
     assert not test_list.del_task('a')
 
 
-def test_clear_all_tasks():
-    test_list = ToDoList('Test')
+def test_clear_all_tasks(create_test_list, print_test_list):
+    test_list = create_test_list
     assert not test_list.clear_all_tasks()
     test_list.add_task('Task 1')
     test_list.add_task('Task 2')
@@ -37,15 +40,15 @@ def test_clear_all_tasks():
     assert len(test_list.todo_items) == 0
 
 
-def test_rename_list():
-    test_list = ToDoList('Test')
+def test_rename_list(create_test_list, print_test_list):
+    test_list = create_test_list
     assert not test_list.rename_list('Test')
     test_list.rename_list('BlaBla')
     assert test_list.name == 'BlaBla'
 
 
-def test_swap_tasks():
-    test_list = ToDoList('Test')
+def test_swap_tasks(create_test_list, print_test_list):
+    test_list = create_test_list
     test_list.add_task('Task 1')
     test_list.add_task('Task 2')
     test_list.add_task('Task 3')
