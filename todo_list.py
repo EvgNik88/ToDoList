@@ -1,3 +1,5 @@
+import csv
+
 class ToDoList:
     menu = {
         '1': 'Добавить задачу',
@@ -8,7 +10,7 @@ class ToDoList:
         '6': 'Изменить порядок задач',
         '7': 'Очистка списка задач',
         '8': 'Переименовать список',
-        '9': 'Выйти'
+        '9': 'Выйти и сохранить'
     }
 
     def __init__(self, name):
@@ -68,7 +70,6 @@ class ToDoList:
         print()
         return True
 
-
     def list(self):
         """Метод для вывода списка задач"""
         print(f'Список задач "{self.name}":')
@@ -93,7 +94,6 @@ class ToDoList:
         print(f"Номера задач {task1} и {task2} поменялись местами.")
         print()
         return True
-
 
     def run(self):
         """Метод для запуска"""
@@ -155,15 +155,24 @@ class ToDoList:
                     self.rename_list(new_name)
                 print()
 
-
             elif command == '8':
                 new_name = input('Введите новое название списка: ')
                 self.rename_list(new_name)
 
-
             elif command == '9':
-                print('Программа завершена.')
+                file_name = input('Введите имя файла для сохранения: ')
+                self.save_to_csv(file_name)
+                print(f'Программа завершена и сохранена в файл {file_name}.')
                 break
+
+    def save_to_csv(self, file_name):
+        """Метод для сохранения списка задач в файл CSV"""
+        with open(file_name, 'w', newline='') as file:
+            fieldnames = ['number', 'task', 'is_task_done']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            for item in self.todo_items:
+                writer.writerow({'number': item.num, 'task': item.todo, 'is_task_done': 'YES' if item.is_done else 'NO'})
 
 
 class ToDoItem:
