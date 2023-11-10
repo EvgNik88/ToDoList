@@ -15,12 +15,12 @@ class TodoApp:
     def delete_list(self, index):
         """Метод для удаления списка задач"""
         if index < 0 or index >= len(self.todo_lists):
-            print('Список задач не найден')
+            print('Список задач не найден.')
             print()
             return False
-
+        deleted_list_name = self.todo_lists[index].name
         del self.todo_lists[index]
-        print('Список задач удален')
+        print(f'Список задач {deleted_list_name} удален.')
         print()
         return True
 
@@ -31,13 +31,13 @@ class TodoApp:
             print()
             return False
 
-        todo_list_for_edit = self.todo_lists[index]
-        todo_list_for_edit.run()
+        self.todo_lists[index].run()
 
     def show_lists(self):
         """Метод для вывода списка всех списков задач"""
         if len(self.todo_lists) == 0:
             print('Нет текущих списков задач')
+            print()
             return
 
         print('Список всех списков задач:')
@@ -45,6 +45,7 @@ class TodoApp:
         for todo_list in self.todo_lists:
             print(f'{index}. {todo_list.name}')
             index += 1
+        print()
 
     def main(self):
         """Метод для запуска программы"""
